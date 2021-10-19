@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+	<style type="text/css">
+		.active{
+			background-color: gray;
+		}
+	</style>
+</head>
+<body>
+  <div id="app">	
+  </div>
+  <script src="../vue.js"></script>
+  <script>
+		var data = {
+			title:'node',
+			content:'',
+			contents:['vue','全栈'],
+			selectedCourse:''
+		}
+    var app = new Vue({
+      el:'#app',
+			data(){
+				return data
+			},
+			methods:{
+				add:function(){
+					this.contents.push(this.content)
+					this.content=''
+				},
+				delete1(item){
+					console.log(item)
+					// this.contents = this.contents.splice()
+					this.contents.splice(item,1)
+				}
+			},
+			render(){
+					with(this){return _c('div',{attrs:{"id":"app"}},[_c('h2',[_v(_s(title))]),_v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(content),expression:"content"}],attrs:{"type":"text"},domProps:{"value":(content)},on:{"keyup":function($event){if(!$event.type.indexOf('key')&&_k($event.keyCode,"enter",13,$event.key,"Enter"))return null;return add.apply(null, arguments)},"input":function($event){if($event.target.composing)return;content=$event.target.value}}}),_c('button',{staticClass:"mui-btn mui-btn-blue",attrs:{"type":"button"},on:{"click":add}},[_v("添加")]),_v(" "),(contents.length==0)?_c('div',[_v("暂时没有商品")]):_c('div',_l((contents),function(item,index){return _c('div',{key:item,style:({backgroundColor:selectedCourse===item?'gray':''}),on:{"click":function($event){selectedCourse=item}}},[_v("\n\t\t\t\t"+_s(item)+"\n\t\t\t\t"),_c('button',{attrs:{"type":"button"},on:{"click":function($event){return delete1(index)}}},[_v("删除")])])}),0)])}
+			}
+    })		
+    setTimeout(()=> {
+      app.title = '华络购物车'
+    },1000)
+	 
+  </script>
+</body>
+</html>

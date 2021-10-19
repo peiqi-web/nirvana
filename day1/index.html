@@ -5,30 +5,57 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+	<style type="text/css">
+		.active{
+			background-color: gray;
+		}
+	</style>
 </head>
 <body>
   <div id="app">
     <h2 >{{title}}</h2>
+		<input type="text" v-model="content" @keyup.enter='add'><button type="button" class="mui-btn mui-btn-blue" v-on:click="add">添加</button>
+		<!-- <div v-for="item in contents" :key="item" :class="{active:selectedCourse === item}" @click="selectedCourse=item">
+			{{item}}
+		</div> -->
+		<div v-if="contents.length==0">暂时没有商品</div>
+		<div v-else>
+			<div v-for="(item,index) in contents" :key="item" :style="{backgroundColor:selectedCourse===item?'gray':''}" @click="selectedCourse=item">
+				{{item}}
+				<button type="button" v-on:click="delete1(index)">删除</button>
+			</div>
+		</div>		
   </div>
   <script src="../vue.js"></script>
   <script>
+		var data = {
+			title:'node',
+			content:'',
+			contents:['vue','全栈'],
+			selectedCourse:''
+		}
     var app = new Vue({
       el:'#app',
-			// data(){
-			// 	return{
-			// 		title:'vue...'
-			// 	}
-			// }
-			data:{
-				title:'vue..'
+			data(){
+				return data
+			},
+			methods:{
+				add:function(){
+					this.contents.push(this.content)
+					this.content=''
+				},
+				delete1(item){
+					console.log(item)
+					// this.contents = this.contents.splice()
+					this.contents.splice(item,1)
+				}
 			}
     })
+		
     setTimeout(()=> {
       app.title = '华络购物车'
     },1000)
-	 // setTimeout(()=>{
-		//  app.title='hh'
-	 // },1000)
+	 
   </script>
 </body>
 </html>
