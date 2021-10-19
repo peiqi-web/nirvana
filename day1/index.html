@@ -39,14 +39,28 @@
 		var data = {
 			title:'node',
 			content:'',
-			contents:['vue','全栈'],
+			contents:'',
 			selectedCourse:'',
 			totalValue:''
 		}
+		function getContens(){
+			return new Promise(resolve=>{
+				setTimeout(()=>{
+					resolve(['web全栈', 'web高级'])
+				},2000)
+			})
+		};
     var app = new Vue({
       el:'#app',
 			data(){
 				return data
+			},
+			async created() {
+				const content = await getContens()
+				this.contents= content
+			},
+			mounted() {
+				
 			},
 			methods:{
 				add:function(){
