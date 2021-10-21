@@ -14,7 +14,9 @@
 <body>
   <div id="app">
     <h2 >{{title}}</h2>
-		<input type="text" v-model="content" @keyup.enter='add'><button type="button" class="mui-btn mui-btn-blue" v-on:click="add">添加</button>	
+		
+		
+		<contents-add @add-content='add'></contents-add>
 		<contents-list :contents="contents"></contents-list>
 		 <p>商品个数:{{totalValue}}</p> 
   </div>
@@ -22,10 +24,25 @@
   <script>
 		var data = {
 			title:'node',
-			content:'',
+			// content:'',
 			contents:['web全栈', 'web高级'],
 			totalValue:''
 		}
+		
+	Vue.component('contents-add',{
+		data(){
+			return{
+				content:''
+			}
+		},
+		methods:{
+			add(){
+				this.$emit('add-content',this.content)
+				this.content=''
+			}
+		},
+		template:`<div><input type="text" v-model="content" @keyup.enter='add'><button type="button" class="mui-btn mui-btn-blue" v-on:click="add">添加</button></div>`
+	})
 	Vue.component('contents-list',{
 		data(){
 			return {
@@ -53,6 +70,8 @@
 			</div>
 		`
 	})
+	
+	
 		// 异步数据
 		function getContens(){
 			return new Promise(resolve=>{
@@ -74,9 +93,8 @@
 				
 			},
 			methods:{
-				add:function(){
-					this.contents.push(this.content)
-					this.content=''
+				add:function(content){
+					this.contents.push(content)
 				},
 				delete1(item){
 					console.log(item)
