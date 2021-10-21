@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+	<style type="text/css">
+		.active{
+			background-color: gray;
+		}
+	</style>
+</head>
+<body>
+  <div id="app">
+    <h2 >{{title}}</h2>
+		<input type="text" v-model="content" @keyup.enter='add'><button type="button" class="mui-btn mui-btn-blue" v-on:click="add">添加</button>	
+		<contents-list :contents="contents"></contents-list>
+		 <p>商品个数:{{totalValue}}</p> 
+  </div>
+  <script src="../vue.js"></script>
+  <script>
+		var data = {
+			title:'node',
+			content:'',
+			contents:['web全栈', 'web高级'],
+			totalValue:''
+		}
+	Vue.component('contents-list',{
+		data(){
+			return {
+					selectedCourse:''
+			}
+		},
+		mounted() {
+			console.log(this.contents)
+		},
+		props:{
+			contents:{
+				type:Array,
+				default:''
+			}
+		},
+		template:	`
+			<div>
+				<div v-if="contents.length==0">暂时没有商品</div>
+				<div v-else>
+					<div v-for="(item,index) in contents" :key="item" :style="{backgroundColor:selectedCourse===item?'gray':''}" @click="selectedCourse=item">
+						{{item}}
+						<button type="button" v-on:click="delete1(index)">删除</button>
+					</div>
+				</div>
+			</div>
+		`
+	})
+		// 异步数据
+		function getContens(){
+			return new Promise(resolve=>{
+				setTimeout(()=>{
+					resolve(['web全栈', 'web高级'])
+				},2000)
+			})
+		};
+    var app = new Vue({
+      el:'#app',
+			data(){
+				return data
+			},
+			async created() {
+				const content = await getContens()
+				this.contents= content
+			},
+			mounted() {
+				
+			},
+			methods:{
+				add:function(){
+					this.contents.push(this.content)
+					this.content=''
+				},
+				delete1(item){
+					console.log(item)
+
+					// this.contents = this.contents.splice()
+					this.contents.splice(item,1)
+				}
+			},
+			computed:{
+				total(){
+					return '111'
+				}
+			},
+			watch: {
+				contents:{
+					immediate:true,
+					handler:function(newValue,oldValue){
+						this.totalValue = newValue.length
+					}
+				}
+			},
+    })
+		
+    setTimeout(()=> {
+      app.title = '华络购物车'
+    },1000)
+	 
+  </script>
+</body>
+</html>
